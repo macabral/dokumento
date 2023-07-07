@@ -19,8 +19,8 @@ return new class extends Migration
             $table->text('titulo')->notNullable();
             $table->longText('descricao')->nullable();
             $table->date('datadoc')->notNullable();
-            $table->date('datavencto')->nullable();
             $table->string('nomearq')->nullable();
+            $table->integer('docsize')->unsigned()->nullable();
             $table->timestamps();
 
             $table->foreign('user_id')->references('id')->on('users');

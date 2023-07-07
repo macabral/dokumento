@@ -5,7 +5,7 @@
             <img src="assets/dokumento.png" width="84" alt="logo Dokumento!">
         </div>
 
-        <div class="flex mt-3 justify-center text-xl font-semibold shadow-md">
+        <div class="flex mt-3 justify-center text-xl font-semibold">
             {{ __('Personal Document Management') }}
         </div>
 
