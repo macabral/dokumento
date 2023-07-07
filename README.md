@@ -1,9 +1,9 @@
 
-## Dokumento
-php 
-Gerenciamento Pessoal de Documentos
+## Dokumento - Gerenciamento Pessoal de Documentos
 
+Com o Dokumento! você pode armazenar seus documentos pessoais como certidão de nascimento, certidão de casamento, contratos, notas fiscais, extratos, etc. Os documentos são armazenados em formato ZIP e você pode proteger seu documento com uma senha adicional.
 
+Ache seu documento de forma fácil e descomplicada. Você pode fazer o download do documento a qualquer tempo.
 
 # Iniciando o projeto Dokumento
 Laravel - Splade - Breeze
