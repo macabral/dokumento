@@ -195,6 +195,10 @@ class DocumentsController extends Controller
 
         $docs = Documentos::findOrFail($id);
 
+        if ($docs['user_id'] != auth('sanctum')->user()->id) {
+            abort(404);
+        }
+
         try {
             
             $docs->fill($input);
@@ -228,7 +232,7 @@ class DocumentsController extends Controller
         $doc = Documentos::findOrFail($id);
 
         if ($doc['user_id'] != auth('sanctum')->user()->id) {
-            return;
+            abort(404);
         }
 
         $doc['datadoc'] = date('d/m/Y', strtotime($doc['datadoc']));
@@ -254,7 +258,7 @@ class DocumentsController extends Controller
         $doc = Documentos::findOrFail($id);
 
         if ($doc['user_id'] != auth('sanctum')->user()->id) {
-            return;
+            abort(404);
         }
 
         return view('document.delete-document-confirm', [
@@ -272,6 +276,10 @@ class DocumentsController extends Controller
     {
 
         $doc = Documentos::findOrFail($id);
+
+        if ($doc['user_id'] != auth('sanctum')->user()->id) {
+            abort(404);
+        }
 
         if (! $doc['nomearq'] == '') {
 
@@ -303,6 +311,10 @@ class DocumentsController extends Controller
         $id = base64_decode($id . env('DOC_SECRET', '0'));
 
         $doc = Documentos::findOrFail($id);
+
+        if ($doc['user_id'] != auth('sanctum')->user()->id) {
+            abort(404);
+        }
 
         $file = ''; $list = []; $download = '';
 
@@ -351,6 +363,10 @@ class DocumentsController extends Controller
         $id = base64_decode($id . env('DOC_SECRET', '0'));
 
         $doc = Documentos::findOrFail($id);
+
+        if ($doc['user_id'] != auth('sanctum')->user()->id) {
+            abort(404);
+        }
 
         // Path to the file
         $created = date('Y', strtotime($doc['created_at']));
