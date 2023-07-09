@@ -56,6 +56,7 @@ Route::middleware('splade')->group(function () {
         Route::get('/document/{id}', [DocumentsController::class, 'show'])->name('documents.show');
         Route::put('/document/{id}', [DocumentsController::class, 'store'])->name('documents.store');
         Route::get('/view/{id}', [DocumentsController::class, 'view'])->name('documents.files');
+        Route::get('/download/{id}', [DocumentsController::class, 'download'])->name('documents.download');
 
         Route::get('/delete/{id}', [DocumentsController::class, 'delete'])->name('documents.delete');
         Route::delete('/document-destroy/{id}', [DocumentsController::class, 'destroy'])->name('documents.destroy');

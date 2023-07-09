@@ -223,7 +223,13 @@ class DocumentsController extends Controller
     public function show($id)
     {
 
+        $id = base64_decode($id . env('DOC_SECRET', '0'));
+
         $doc = Documentos::findOrFail($id);
+
+        if ($doc['user_id'] != auth('sanctum')->user()->id) {
+            return;
+        }
 
         $doc['datadoc'] = date('d/m/Y', strtotime($doc['datadoc']));
 
@@ -233,27 +239,6 @@ class DocumentsController extends Controller
         
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, $id)
-    {
-        $this->validate($request, [
-            'titulo' => 'required|max:254',
-            'datadoc' => 'required'
-        ]);
-
-        $doc = Documentos::where('id',$id)->get();
-
-        return view('document.new-document-form', [
-            'document' => $doc,
-        ]);
-
-    }
 
     /**
      * Remove the specified resource from storage.
@@ -264,10 +249,16 @@ class DocumentsController extends Controller
     public function delete($id)
     {
 
-        $docs = Documentos::findOrFail($id);
+        $id = base64_decode($id . env('DOC_SECRET', '0'));
+
+        $doc = Documentos::findOrFail($id);
+
+        if ($doc['user_id'] != auth('sanctum')->user()->id) {
+            return;
+        }
 
         return view('document.delete-document-confirm', [
-            'document' => $docs,
+            'document' => $doc,
         ]);
     }
 
@@ -309,6 +300,8 @@ class DocumentsController extends Controller
     public function view($id)
     {
 
+        $id = base64_decode($id . env('DOC_SECRET', '0'));
+
         $doc = Documentos::findOrFail($id);
 
         $file = ''; $list = []; $download = '';
@@ -336,8 +329,8 @@ class DocumentsController extends Controller
         }
 
         $ret = array(
-            "download" => $download,
-            "file" => $file,
+            "id" => base64_encode($doc['id'] . env('DOC_SECRET', '0')),
+            "file" => $doc['nomearq'],
             "files" => $list
         );
 
@@ -346,4 +339,38 @@ class DocumentsController extends Controller
         ]);
     }
     
+    /**
+     * View download a especific document.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function download($id)
+    {
+
+        $id = base64_decode($id . env('DOC_SECRET', '0'));
+
+        $doc = Documentos::findOrFail($id);
+
+        // Path to the file
+        $created = date('Y', strtotime($doc['created_at']));
+        $path = public_path('uploads/' . auth('sanctum')->user()->id . '/' . $created . '/' . $doc['nomearq']);
+
+        // This is based on file type of $path, but not always needed    
+        $mm_type = "application/octet-stream";
+
+        //Set headers
+        header("Pragma: public");
+        header("Expires: 0");
+        header("Cache-Control: must-revalidate, post-check=0, pre-check=0");
+        header("Cache-Control: public");
+        header("Content-Description: File Transfer");
+        header("Content-Type: " . $mm_type);
+        header("Content-Length: " .(string)(filesize($path)) );
+        header('Content-Disposition: attachment; filename="'.basename($path).'"');
+        header("Content-Transfer-Encoding: binary\n");
+
+        // Outputs the content of the file
+        readfile($path);
+    }
 }
