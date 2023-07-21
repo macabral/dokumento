@@ -38,6 +38,7 @@ class DocumentsController extends Controller
 
         $ret = QueryBuilder::for(Documentos::class)
             ->where('user_id', $user_id)
+            ->orderby('created_at', 'desc')
             ->allowedSorts(['titulo', 'datadoc', 'created_at'])
             ->allowedFilters(['titulo', 'datadoc', 'descricao', 'created_at', $globalSearch])
             ->paginate(7)
@@ -308,6 +309,8 @@ class DocumentsController extends Controller
     public function view($id)
     {
 
+        $retId = $id;  // encoded Id
+
         $id = base64_decode($id . env('DOC_SECRET', '0'));
 
         $doc = Documentos::findOrFail($id);
@@ -321,7 +324,7 @@ class DocumentsController extends Controller
         if ($doc['nomearq'] != '') {
             $created = date('Y', strtotime($doc['created_at']));
             $file = public_path('uploads/' . auth('sanctum')->user()->id . '/' . $created . '/' . $doc['nomearq']);
-            $download = 'http://localhost:8000/uploads/' . auth('sanctum')->user()->id . '/' . $created . '/' . $doc['nomearq'];
+            $download = env('APP_URL', 'http://localhost:8000') . '/uploads/' . auth('sanctum')->user()->id . '/' . $created . '/' . $doc['nomearq'];
 
             $zip = new ZipArchive();
             
@@ -341,7 +344,7 @@ class DocumentsController extends Controller
         }
 
         $ret = array(
-            "id" => base64_encode($doc['id'] . env('DOC_SECRET', '0')),
+            "id" => $retId,
             "file" => $doc['nomearq'],
             "files" => $list
         );
