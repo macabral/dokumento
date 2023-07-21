@@ -15,7 +15,8 @@ class Documentos extends Model
         'datadoc',
         'user_id',
         'nomearq',
-        'docsize'
+        'docsize',
+        'notas'
     ];
 
 }

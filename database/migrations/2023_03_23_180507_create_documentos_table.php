@@ -18,6 +18,7 @@ return new class extends Migration
             $table->foreignId('user_id')->notNullable()->index();
             $table->text('titulo')->notNullable();
             $table->longText('descricao')->nullable();
+            $table->longText('notas')->nullable();
             $table->date('datadoc')->notNullable();
             $table->string('nomearq')->nullable();
             $table->integer('docsize')->unsigned()->nullable();

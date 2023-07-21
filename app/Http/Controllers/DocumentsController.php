@@ -75,6 +75,7 @@ class DocumentsController extends Controller
             'datadoc' => $datadoc,
             'user_id' => auth('sanctum')->user()->id,
             'nomearq' => '',
+            'notas' => '',
             'docsize' => 0
         );
 
@@ -158,6 +159,7 @@ class DocumentsController extends Controller
                 'id' => $doc['id'],
                 'titulo' => $doc['titulo'],
                 'descricao' => $doc['descricao'],
+                'notas' => $doc['notas'],
                 'datadoc' => $datadoc,
                 'user_id' => auth('sanctum')->user()->id,
                 'nomearq' => $zip_file,
