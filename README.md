@@ -12,7 +12,8 @@ v0.1:  21/07/23
 - Ordenação do resultado da procura por "created_at" (desc)
 
 # Iniciando o projeto Dokumento
-Laravel - Splade - Breeze
+
+Laravel v10.14.1 | Splade | Breeze | PHP v8.1.21
 
 laravel new dokumento
  

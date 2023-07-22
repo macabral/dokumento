@@ -28,9 +28,9 @@
   "Created.": "Criado.",
   "Current Password": "Senha Atual",
   "Dashboard": "Painel de controle",
-  "Delete": "Deletar",
-  "Delete API Token": "Deletar o Token de API",
-  "Delete Account": "Deletar Conta",
+  "Delete": "Excluir",
+  "Delete API Token": "Excluir o Token de API",
+  "Delete Account": "Excluir Conta",
   "Disable": "Desabilitar",
   "E-Mail Address": "E-mail",
   "Email Address": "Endereço de e-mail",
@@ -169,5 +169,6 @@
   "Personal Document Management": "Gerenciamento de Documentos Pessoais",
   "Profile updated!": "Perfil atualizado!",
   "Account deleted!": "Conta excluída!",
-  "Notes": "Anotações"
+  "Notes": "Anotações",
+  "Edit": "Editar"
 }

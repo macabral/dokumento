@@ -4,6 +4,7 @@
         <x-auth-session-status class="mb-4" />
 
         <x-splade-form action="{{ route('login') }}" class="space-y-4">
+            @csrf
             <!-- Email Address -->
             <x-splade-input id="email" type="email" name="email" :label="__('Email')" required autofocus />
             <x-splade-input id="password" type="password" name="password" :label="__('Password')" required autocomplete="current-password" />

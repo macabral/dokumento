@@ -12,12 +12,12 @@
 
         <div class="mt-4 flex items-center justify-between">
             <x-splade-form action="{{ route('verification.send') }}">
+                @csrf
                 <x-splade-submit :label="__('Resend Verification Email')" />
             </x-splade-form>
 
             <form method="POST" action="{{ route('logout') }}">
                 @csrf
-
                 <button type="submit" class="underline text-sm text-gray-600 hover:text-gray-900">
                     {{ __('Log Out') }}
                 </button>
