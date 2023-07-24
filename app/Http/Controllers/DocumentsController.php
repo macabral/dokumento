@@ -329,20 +329,23 @@ class DocumentsController extends Controller
             $file = public_path('uploads/' . auth('sanctum')->user()->id . '/' . $created . '/' . $doc['nomearq']);
             $download = env('APP_URL', 'http://localhost:8000') . '/uploads/' . auth('sanctum')->user()->id . '/' . $created . '/' . $doc['nomearq'];
 
-            $zip = new ZipArchive();
+            if (file_exists($file)) {
+
+                $zip = new ZipArchive();
+                
+                if ($zip->open($file, \ZipArchive::RDONLY)) {
+                    $numfiles = $zip->count();
+
+                    for($idx=0; $idx < $numfiles; $idx++) {
+
+                        $parts = explode(DIRECTORY_SEPARATOR, $zip->getNameIndex($idx));
             
-            if ($zip->open($file, \ZipArchive::RDONLY)) {
-                $numfiles = $zip->count();
-
-                for($idx=0; $idx < $numfiles; $idx++) {
-
-                    $parts = explode(DIRECTORY_SEPARATOR, $zip->getNameIndex($idx));
-        
-                    array_push($list, $parts);
-        
+                        array_push($list, $parts);
+            
+                    }
+            
+                    $zip->close();
                 }
-        
-                $zip->close();
             }
         }
 
