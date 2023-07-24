@@ -24,7 +24,11 @@ class ProfileController extends Controller
 
         $user = $request->user();
 
-        $user->keyword = Crypt::decryptString($user->keyword);
+        if (!empty($user->keyword)) {
+
+            $user->keyword = Crypt::decryptString($user->keyword);
+
+        }
 
         return view('profile.edit', [
             'user' => $user,
