@@ -9,7 +9,7 @@ use Illuminate\Support\Facades\Redirect;
 use ProtoneMedia\Splade\Facades\Toast;
 use App\Models\User;
 use App\Models\Documentos;
-use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Crypt;
 
 
 class ProfileController extends Controller
@@ -22,8 +22,12 @@ class ProfileController extends Controller
     public function edit(Request $request)
     {
 
+        $user = $request->user();
+
+        $user->keyword = Crypt::decryptString($user->keyword);
+
         return view('profile.edit', [
-            'user' => $request->user(),
+            'user' => $user,
         ]);
     }
 
@@ -64,6 +68,8 @@ class ProfileController extends Controller
         $user = User::findorfail($id);
 
         $input = $request->all();
+
+        $input['keyword'] = Crypt::encryptString($input['keyword']);
  
         $user->fill($input);
 
