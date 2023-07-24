@@ -11,6 +11,9 @@ Ache seu documento de forma fácil e descomplicada. Você pode fazer o download 
 v0.1:  21/07/23
 - Ordenação do resultado da procura por "created_at" (desc)
 
+v0.2: 24/07/23
+- Salvando o keyword (senha de arquivos zip) criptografada no banco de dados.
+
 # Iniciando o projeto Dokumento
 
 Laravel v10.14.1 | Splade | Breeze | PHP v8.1.21

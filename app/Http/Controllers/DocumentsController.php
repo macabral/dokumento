@@ -12,6 +12,7 @@ use ProtoneMedia\Splade\SpladeTable;
 use ProtoneMedia\Splade\Facades\Toast;
 use Spatie\QueryBuilder\QueryBuilder;
 use Spatie\QueryBuilder\AllowedFilter;
+use Illuminate\Support\Facades\Crypt;
 
 
 class DocumentsController extends Controller
@@ -129,7 +130,7 @@ class DocumentsController extends Controller
 
                 if ($zipStatus == true) {
 
-                    $password = auth('sanctum')->user()->keyword;
+                    $password = Crypt::decryptString(auth('sanctum')->user()->keyword);
                     
                     if (! empty($password)) {
                         if (!$zip->setPassword($password)) {
