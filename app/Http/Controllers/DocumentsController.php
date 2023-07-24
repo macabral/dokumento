@@ -322,13 +322,12 @@ class DocumentsController extends Controller
             abort(404);
         }
 
-        $file = ''; $list = []; $download = ''; $nomearq = $doc['nomearq'];
+        $file = ''; $list = []; $nomearq = $doc['nomearq'];
 
         if ($nomearq != '') {
             $created = date('Y', strtotime($doc['created_at']));
             $file = public_path('uploads/' . auth('sanctum')->user()->id . '/' . $created . '/' . $doc['nomearq']);
-            $download = env('APP_URL', 'http://localhost:8000') . '/uploads/' . auth('sanctum')->user()->id . '/' . $created . '/' . $doc['nomearq'];
-
+dd($file);
             if (file_exists($file)) {
 
                 $zip = new ZipArchive();
@@ -346,6 +345,7 @@ class DocumentsController extends Controller
             
                     $zip->close();
                 }
+
             } else {
                 $nomearq = '';
             }
