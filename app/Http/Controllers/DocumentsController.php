@@ -327,7 +327,7 @@ class DocumentsController extends Controller
         if ($nomearq != '') {
             $created = date('Y', strtotime($doc['created_at']));
             $file = public_path('uploads/' . auth('sanctum')->user()->id . '/' . $created . '/' . $doc['nomearq']);
-dd($file);
+
             if (file_exists($file)) {
 
                 $zip = new ZipArchive();
