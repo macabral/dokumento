@@ -322,9 +322,9 @@ class DocumentsController extends Controller
             abort(404);
         }
 
-        $file = ''; $list = []; $download = '';
+        $file = ''; $list = []; $download = ''; $nomearq = $doc['nomearq'];
 
-        if ($doc['nomearq'] != '') {
+        if ($nomearq != '') {
             $created = date('Y', strtotime($doc['created_at']));
             $file = public_path('uploads/' . auth('sanctum')->user()->id . '/' . $created . '/' . $doc['nomearq']);
             $download = env('APP_URL', 'http://localhost:8000') . '/uploads/' . auth('sanctum')->user()->id . '/' . $created . '/' . $doc['nomearq'];
@@ -346,12 +346,14 @@ class DocumentsController extends Controller
             
                     $zip->close();
                 }
+            } else {
+                $nomearq = '';
             }
         }
 
         $ret = array(
             "id" => $retId,
-            "file" => $doc['nomearq'],
+            "file" => $nomearq,
             "files" => $list
         );
 
