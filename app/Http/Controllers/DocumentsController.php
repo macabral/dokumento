@@ -24,7 +24,6 @@ class DocumentsController extends Controller
      */
     public function index(Request $request)
     {
-        $input = $request->all();
         $user_id = auth('sanctum')->user()->id;
 
         $globalSearch = AllowedFilter::callback('global', function ($query,$value) {
@@ -96,7 +95,8 @@ class DocumentsController extends Controller
 
         $this->validate($request, [
             'titulo' => 'required|max:254',
-            'datadoc' => 'required'
+            'datadoc' => 'required',
+            'notas' => 'max:254'
         ]);
 
         try {
@@ -192,7 +192,8 @@ class DocumentsController extends Controller
 
         $this->validate($request, [
             'titulo' => 'required|max:254',
-            'datadoc' => 'required'
+            'datadoc' => 'required',
+            'notas' => 'max:254'
         ]);
 
         $input = $request->all();

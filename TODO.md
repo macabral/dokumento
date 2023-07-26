@@ -7,6 +7,7 @@
 *    - permitir inserir um novo documento
 *    - permitir excluir documentos
 *    - pemitir exibir um documento selecionado
+*
 * - armazenar os documentos no AWS S3
 * - armazenar os documentos no OneDrive / Google Drive
 * - backup dos dados e documentos
@@ -15,6 +16,9 @@
 * - implementar testes unitários
 * - implementar testes de integração
 * - implementar documentação swagger
+* - permitir configurar a pasta para o armazenamento dos documentos
 */
 
+
+https://josuamarcelc.com/install-php-8-2-on-ubuntu-with-nginx/
 
