@@ -41,7 +41,7 @@ class DocumentsController extends Controller
             ->orderby('created_at', 'desc')
             ->allowedSorts(['titulo', 'datadoc', 'created_at'])
             ->allowedFilters(['titulo', 'datadoc', 'descricao', 'created_at', $globalSearch])
-            ->paginate(7)
+            ->paginate()
             ->withQueryString();
 
         return view('document.result-search-document', [

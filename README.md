@@ -13,6 +13,7 @@ v0.1:  21/07/23
 
 v0.2: 24/07/23
 - Salvando o keyword (senha de arquivos zip) criptografada no banco de dados.
+- favicon
 
 # Iniciando o projeto Dokumento
 
