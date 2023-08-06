@@ -15,6 +15,11 @@ v0.2: 24/07/23
 - Salvando o keyword (senha de arquivos zip) criptografada no banco de dados.
 - favicon
 
+v0.3: 06/08/23
+- Incluir/excluir arquivos de um Documento já existente
+- Visualizar/download de um documento
+
+
 # Iniciando o projeto Dokumento
 
 Laravel v10.14.1 | Splade | Breeze | PHP v8.1.21

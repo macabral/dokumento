@@ -182,6 +182,82 @@ class DocumentsController extends Controller
     }
 
     /**
+     * Upload a document.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function upload($id, Request $request)
+    {
+        $iddoc = base64_decode($id . env('DOC_SECRET', '0'));
+
+        $doc = Documentos::findOrFail($iddoc);
+
+        if ($doc['user_id'] != auth('sanctum')->user()->id) {
+            abort(404);
+        }
+
+        $arqs = $request->file('arquivos');
+        
+        if (!is_null($arqs)) {
+
+            $created = substr($doc['created_at'],0,4);
+            $destinationPath = public_path('uploads/' . auth('sanctum')->user()->id . '/' . $created) . '/' . $doc['nomearq'];
+
+            if (!file_exists($destinationPath) || empty($doc['nomearq']) ) {
+
+                $destinationPath = public_path('uploads/' . auth('sanctum')->user()->id . '/' . $created);
+                if (!is_dir($destinationPath)) {
+                    mkdir($destinationPath, 0777, true);
+                }
+                
+                $zip_file = Uuid::uuid4() . '.zip';
+                while (file_exists($destinationPath . '/' . $zip_file)) {
+                    $zip_file = Uuid::uuid4() . '.zip';
+                }
+                $doc['nomearq'] = $zip_file;
+                $destinationPath =  $destinationPath . '/' . $zip_file;
+                $tipo = ZipArchive::CREATE | ZipArchive::OVERWRITE;
+                
+            } else {
+
+                $zip_file = $doc['nomearq'];
+                $tipo = 0;
+
+            }
+
+            $zip = new ZipArchive;
+
+            if ($zip->open($destinationPath, $tipo)) {
+
+                $password = Crypt::decryptString(auth('sanctum')->user()->keyword);
+
+                foreach($arqs as $file) {
+                            
+                    $zip->addFile($file, basename($file->getClientOriginalName()));
+                    if (! empty($password)) {
+                        if (!$zip->setEncryptionName( basename($file->getClientOriginalName()), ZipArchive::EM_TRAD_PKWARE, $password)) {
+                            Log::info('Erro encrypt ' .  basename($file->getClientOriginalName()));
+                        }
+                    }
+
+                }
+
+                $zip->close();
+
+            }
+
+            $doc->save();
+
+            Toast::title(__('Document saved!'))->autoDismiss(5);
+    
+            return redirect()->back();
+
+        }
+
+
+    }
+    /**
      * Store a newly created resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
@@ -301,7 +377,7 @@ class DocumentsController extends Controller
 
         Toast::title(__('Document deleted!'))->autoDismiss(5);
 
-        return redirect()->back();
+        
     }
 
     /**
@@ -312,15 +388,26 @@ class DocumentsController extends Controller
      */
     public function view($id)
     {
-
+        
         $retId = $id;  // encoded Id
 
-        $id = base64_decode($id . env('DOC_SECRET', '0'));
+        $iddoc = base64_decode($id . env('DOC_SECRET', '0'));
 
-        $doc = Documentos::findOrFail($id);
+        $doc = Documentos::findOrFail($iddoc);
 
         if ($doc['user_id'] != auth('sanctum')->user()->id) {
             abort(404);
+        }
+
+        // exclui os arquivo da pasta
+
+        $pasta = public_path('uploads/' . auth('sanctum')->user()->id . '/downloads');
+
+        $files = glob($pasta . '/*'); 
+        foreach($files as $file){ 
+            if(is_file($file)) {
+                unlink($file); 
+            }
         }
 
         $file = ''; $list = []; $nomearq = $doc['nomearq'];
@@ -335,15 +422,18 @@ class DocumentsController extends Controller
                 
                 if ($zip->open($file, \ZipArchive::RDONLY)) {
                     $numfiles = $zip->count();
-
                     for($idx=0; $idx < $numfiles; $idx++) {
 
                         $parts = explode(DIRECTORY_SEPARATOR, $zip->getNameIndex($idx));
-            
                         array_push($list, $parts);
             
                     }
-            
+
+                    $password = Crypt::decryptString(auth('sanctum')->user()->keyword);
+                    $zip->setPassword($password);
+
+                    $zip->extractTo($pasta);
+
                     $zip->close();
                 }
 
@@ -354,6 +444,7 @@ class DocumentsController extends Controller
 
         $ret = array(
             "id" => $retId,
+            "iddoc" => $iddoc,
             "file" => $nomearq,
             "files" => $list
         );
@@ -363,6 +454,45 @@ class DocumentsController extends Controller
         ]);
     }
     
+
+    /**
+     * Delete a file in ZIP
+     *
+     * @param  int  $id $nomearq
+     * @return \Illuminate\Http\Response
+     */
+    public function deleteFile($id, $nomearq)
+    {
+
+        $iddoc = base64_decode($id . env('DOC_SECRET', '0'));
+
+        $doc = Documentos::findOrFail($iddoc);
+
+        if ($doc['user_id'] != auth('sanctum')->user()->id) {
+            abort(404);
+        }
+
+        // Path to the file
+        $created = date('Y', strtotime($doc['created_at']));
+        $path = public_path('uploads/' . auth('sanctum')->user()->id . '/' . $created . '/' . $doc['nomearq']);
+
+        if (file_exists($path)) {
+
+            $zip = new ZipArchive();
+
+            if ($zip->open($path) === TRUE) {
+                $zip->deleteName($nomearq);
+                $zip->close();
+
+                Toast::title(__('Document deleted!'))->autoDismiss(5);
+                
+            }
+        }
+
+        return redirect()->back();
+
+    }
+
     /**
      * View download a especific document.
      *
