@@ -197,9 +197,7 @@ class DocumentsController extends Controller
     public function upload($id, Request $request)
     {
         $this->validate($request, [
-            'arquivos' => 'required',
-            'media' => 'sometimes|array',
-            'media.*' => 'max:1000'
+            'arquivos' => 'required | max:1000',
         ]);
 
         $iddoc = base64_decode($id . env('DOC_SECRET', '0'));
