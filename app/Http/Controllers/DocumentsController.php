@@ -196,6 +196,10 @@ class DocumentsController extends Controller
      */
     public function upload($id, Request $request)
     {
+        $this->validate($request, [
+            'arquivos' => 'required'
+        ]);
+
         $iddoc = base64_decode($id . env('DOC_SECRET', '0'));
 
         $doc = Documentos::findOrFail($iddoc);
