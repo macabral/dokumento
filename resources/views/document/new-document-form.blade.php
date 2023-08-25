@@ -18,7 +18,6 @@
                     
                         <x-splade-modal>
                             <x-splade-form method="post" :action="route('documents.create')" :default="$document" class="mt-4 space-y-4" preserve-scroll>
-                                @csrf
                                 @include('document.document-form')
                             </x-splade-form>
                         </x-splade-modal>

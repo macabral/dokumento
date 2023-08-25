@@ -5,7 +5,6 @@ Com o Dokumento! você pode armazenar seus documentos pessoais como certidão de
 
 Ache seu documento de forma fácil e descomplicada. Você pode fazer o download do documento a qualquer tempo.
 
-
 # Versões:
 
 v0.1:  21/07/23
