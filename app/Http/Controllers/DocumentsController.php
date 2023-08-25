@@ -199,7 +199,7 @@ class DocumentsController extends Controller
         $this->validate($request, [
             'arquivos' => 'required',
             'media' => 'sometimes|array',
-            'media.*' => 'max:1000',
+            'media.*' => 'max:1000'
         ]);
 
         $iddoc = base64_decode($id . env('DOC_SECRET', '0'));
