@@ -245,7 +245,7 @@ class DocumentsController extends Controller
 
                 foreach($arqs as $file) {
 
-                    if (! empty($file)) {
+                    if ($file) {
                     
                         try {
                             $zip->addFile($file, basename($file->getClientOriginalName()));
