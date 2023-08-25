@@ -4,7 +4,7 @@
 <x-splade-textarea id="notas" name="notas" autosize :label="__('Notes')" autocomplete="notas" />
 
 @if ($document['id'] == 0)
-    <x-splade-file name="arquivos[]" multiple filepond  />
+    <x-splade-file name="arquivos[]" multiple filepond max-size="100MB"/>
 @endif
 
 <div class="flex items-center gap-4">
