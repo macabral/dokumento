@@ -244,12 +244,19 @@ class DocumentsController extends Controller
                 $password = Crypt::decryptString(auth('sanctum')->user()->keyword);
 
                 foreach($arqs as $file) {
-                            
-                    $zip->addFile($file, basename($file->getClientOriginalName()));
-                    if (! empty($password)) {
-                        if (!$zip->setEncryptionName( basename($file->getClientOriginalName()), ZipArchive::EM_TRAD_PKWARE, $password)) {
-                            Log::info('Erro encrypt ' .  basename($file->getClientOriginalName()));
+                    
+                    try {
+                        $zip->addFile($file, basename($file->getClientOriginalName()));
+                        if (! empty($password)) {
+                            if (!$zip->setEncryptionName( basename($file->getClientOriginalName()), ZipArchive::EM_TRAD_PKWARE, $password)) {
+                                Log::info('Erro encrypt ' .  basename($file->getClientOriginalName()));
+                            }
                         }
+                    } catch (\Exception $e) {
+
+                        Toast::title(__('It was not possible to upload. ' . $e))->danger()->autoDismiss(15);
+                        Log::info($e);
+                
                     }
 
                 }
