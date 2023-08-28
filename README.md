@@ -17,6 +17,7 @@ v0.2: 24/07/23
 v0.3: 06/08/23
 - Incluir/excluir arquivos de um Documento já existente
 - Visualizar/download de um documento
+- Max upload de 100MB
 
 
 # Iniciando o projeto Dokumento
