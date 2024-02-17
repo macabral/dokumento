@@ -403,6 +403,7 @@ class DocumentsController extends Controller
 
         Toast::title(__('Document deleted!'))->autoDismiss(5);
 
+        return redirect()->route('search');
         
     }
 
